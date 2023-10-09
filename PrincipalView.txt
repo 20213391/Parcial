@@ -1,0 +1,27 @@
+#include "frmMantProductos.h"
+
+
+/*Creacion de espacio de memoria para ventana*/
+frmMantenimientoTarjetas^ ventanaMantTarjetas = gcnew frmMantenimientoTarjetas();
+
+•	MDI:
+	-	Son pantallas que sirven como contenedoras de otras
+	-	Solo puede existir una pantalla MDI por aplicación
+		Así se vuelve MDI una pantalla en Visual:
+		
+		Propiedades->EsContenedorMDI->True
+
+•	No MDI:
+	-	Modales (ShowDialog): Son aquellas pantallas que al mostrarse no permiten regresar a la pantalla anterior hasta que esta pantalla se cierre:
+		
+		ventanaPlatos->ShowDialog();
+
+	-	Amodales (Show): Son aquellas pantallas que al mostrarse si permiten regresar a la pantalla anterior sin necesidad de que esta pantalla se cierre:
+		
+		ventanaPlatos->Show();
+		
+		Este tipo de pantalla permite ser creada dentro de un MDI para que no salga de sus límites:
+		
+		/*Solo se puede implementar en el principal porque es el MDI del proyecto*/
+		ventanaPlatos->MdiParent = this;
+		ventanaPlatos->Show();

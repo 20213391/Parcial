@@ -1,0 +1,45 @@
+frmEditPlato(Plato^ objPlato)
+{
+	InitializeComponent();
+	
+	this->objPlato = objPlato;
+
+}
+.
+.
+.
+private: Plato^ objPlato;
+.
+.
+.
+/*GRABAR O GUARDAR MODIFICACIONES HECHAS DESPUES DEL LOAD*/
+
+	/*PERSISTENCIA DE DATOS MODIFICADOS*/
+	int codigoPlato = Convert::ToInt32(this->textBox1->Text);
+	String^ Nombre = this->textBox2->Text;
+	String^ Origen = this->textBox3->Text;
+	String^ Precio = this->textBox4->Text;
+
+	Plato^ objPlato = gcnew Plato(codigoPlato, Nombre, Origen, Precio);
+	PlatoController^ objPlatoController = gcnew PlatoController();
+
+	/*MODIFICAR VALORES DE ATRIBUTOS DE OBJETO. VER MAS EN PLATOCONTROLLER.CPP*/
+	objPlatoController->editarPlato(objPlato);
+	MessageBox::Show("El plato ha sido modificado con exito");
+	this->Close();
+
+	/*frmMantProductos^ objPlatoView = gcnew frmMantProductos();
+	frmPrincipal->ventanaMantProductos->button2_Click(sender, e);*/
+
+	/*MODELO DE MODIFICACION SIN CREACION DE FUNCION (NO OLVIDAR ESCRIBIR EN ARCHIVO TXT)
+	this->objPlato->setCodigo(Convert::ToInt32(this->textBox1->Text));
+	this->objPlato->setNombre(objPlato->getNombre());*/
+	
+
+/*CARGAR VALORES DE ATRIBUTOS DEL OBJETO SELECCIONADO EN VENTANA*/
+
+	this->textBox1->Text = Convert::ToString(this->objPlato->getCodigo());
+	this->textBox2->Text = this->objPlato->getNombre();
+	this->textBox3->Text = this->objPlato->getOrigen();
+	this->textBox4->Text = this->objPlato->getPrecio();
+	

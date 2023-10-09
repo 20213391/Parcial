@@ -1,0 +1,69 @@
+#include "frmMantNuevoPlato.h"
+#include "frmEditPlato.h"	
+	
+	using namespace System::Collections::Generic;
+	using namespace SistemaMonederoController;
+	using namespace SistemaMonederoModel;
+	using namespace SistemaMonederoController;
+
+/*MOSTRAR GRILLA*/
+
+private: void mostrarGrilla(List<Plato^>^ listaPlatos) {
+	this->dataGridView1->Rows->Clear(); /*Elimino toda la informacion del datagrid*/
+	for (int i = 0; i < listaPlatos->Count; i++) {
+		Plato^ objPlato = listaPlatos[i];
+		array<String^>^ filaGrilla = gcnew array<String^>(4);
+		filaGrilla[0] = Convert::ToString(objPlato->getCodigo());
+		filaGrilla[1] = objPlato->getNombre();
+		filaGrilla[2] = objPlato->getOrigen();
+		filaGrilla[3] = objPlato->getPrecio();
+		this->dataGridView1->Rows->Add(filaGrilla);
+	}
+}
+
+/*MOSTRAR VENTANA DE NUEVO PLATO*/
+
+	frmMantNuevoPlato^ ventanaNuevoPlato = gcnew frmMantNuevoPlato();
+	ventanaNuevoPlato->ShowDialog();
+
+/*EDITAR*/
+
+	int filaSeleccionada = this->dataGridView1->SelectedRows[0]->Index; /*Le pongo [0] porque en este caso estamos asumiendo que solo seleccionamos una fila, por ello es la de la posicion 0*/
+	int codigoEditar = Convert::ToInt32(this->dataGridView1->Rows[filaSeleccionada]->Cells[0]->Value->ToString());
+	PlatoController^ ObjPlatoController = gcnew PlatoController();
+	Plato^ objPlato = ObjPlatoController->buscarPlatoxCodigo(codigoEditar);
+
+	frmEditPlato^ ventanaEditPlato = gcnew frmEditPlato(objPlato);
+	ventanaEditPlato->ShowDialog();
+	
+/*ELIMINAR*/
+
+	PlatoController^ ObjPlatoController;
+
+	int filaSeleccionada = this->dataGridView1->SelectedRows[0]->Index; /*Le pongo [0] porque en este caso estamos asumiendo que solo seleccionamos una fila, por ello es la de la posicion 0*/
+	int codigoEliminar = Convert::ToInt32(this->dataGridView1->Rows[filaSeleccionada]->Cells[0]->Value->ToString());
+	ObjPlatoController->eliminarPlatoFisico(codigoEliminar);
+
+	MessageBox::Show("El plato se ha sido eliminado con éxito");
+	
+/*BUSCAR*/
+
+	String^ Origen = this->comboBox2->Text;
+	PlatoController^ ObjPlatoController = gcnew PlatoController();
+	
+	List<Plato^>^ listaPlatos = ObjPlatoController->buscarPlatosxOrigen(Origen); 
+	mostrarGrilla(listaPlatos); 
+	
+/*PERSISTENCIA DE ITEMS DE CRITERIO DE BUSQUEDA IMPLEMENTADO EN LOAD*/
+
+private: System::Void frmMantProductos_Load(System::Object^ sender, System::EventArgs^ e) {
+
+	PlatoController^ objPlatoController = gcnew PlatoController();
+	List<String^>^ listaOrigenes = objPlatoController->obtenerOrigenes();
+
+	this->comboBox2->Items->Clear();
+
+	for (int i = 0; i < listaOrigenes->Count; i++) {
+		this->comboBox2->Items->Add(listaOrigenes[i]);
+	}
+}

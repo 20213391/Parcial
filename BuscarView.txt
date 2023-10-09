@@ -1,0 +1,15 @@
+frmBuscarProyectos(Proyecto^ objProyecto)
+{
+	InitializeComponent();
+	this->objProyecto = objProyecto;
+	//
+	//TODO: agregar código de constructor aquí
+	//
+}
+.
+.
+.
+private: Proyecto^ objProyecto;
+.
+.
+.

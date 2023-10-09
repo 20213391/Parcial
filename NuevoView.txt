@@ -1,0 +1,54 @@
+
+
+public:
+	frmNuevoEdificio(void)
+	{
+		InitializeComponent();
+		this->objProyecto = gcnew Proyecto();
+		//
+		//TODO: agregar código de constructor aquí
+		//
+	}
+	
+.
+.
+.
+private: Proyecto^ objProyecto;
+.
+.
+.
+
+
+private: System::Void button1_Click(System::Object^ sender, System::EventArgs^ e) {
+	frmBuscarProyectos^ ventanaBuscarProyectos = gcnew frmBuscarProyectos(this->objProyecto);
+	ventanaBuscarProyectos->ShowDialog();
+	
+	/*Cuando regreso de la pantalla de BuscarProyecto, el this->objProyecto que le pase como parametro ya tiene datos*/
+	this->textBox1->Text = Convert::ToString(this->objProyecto->getCodigo());
+	this->textBox2->Text = this->objProyecto->getNombre();
+	this->dateTimePicker1->Text = this->objProyecto->getFechaEntrega();
+}
+
+/*PERSISTENCIA DE DATOS, NUEVO, AGREGAR*/
+private: System::Void button2_Click(System::Object^ sender, System::EventArgs^ e) {
+	int codigo = Convert::ToInt32(this->textBox3->Text);
+	int numero = Convert::ToInt32(this->textBox4->Text);
+	int nroPisos = Convert::ToInt32(this->textBox5->Text);
+	int nroDepartamentos = Convert::ToInt32(this->textBox6->Text);
+	int aforo = Convert::ToInt32(this->textBox7->Text);
+	double areaTotal = Convert::ToDouble(this->textBox8->Text);
+	double areaCochera = Convert::ToDouble(this->textBox9->Text);
+	double latitud = Convert::ToDouble(this->textBox10->Text);
+	double longitud = Convert::ToDouble(this->textBox11->Text);
+	
+	Ubicacion^ objUbicacion = gcnew Ubicacion(codigo, latitud, longitud);
+	Edificio^ objEdificio = gcnew Edificio(codigo, nroPisos, nroDepartamentos, aforo, areaTotal, numero, areaCochera, objUbicacion);
+	UbicacionController^ objUbicacionController = gcnew UbicacionController();
+	
+	objUbicacionController->agregarUbicacion(objUbicacion);
+	
+	EdificioController^ objEdificioController = gcnew EdificioController();
+	
+	objEdificioController->agregarEdificio(objEdificio, this->objProyecto->getCodigo());
+	this->Close();
+}
